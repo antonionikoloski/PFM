@@ -1,6 +1,7 @@
 
 
 using System.Transactions;
+using Microsoft.EntityFrameworkCore;
 using pfm.Commands;
 using pfm.Database.Entities;
 
@@ -24,9 +25,21 @@ namespace pfm.Database.Repositories
             return transaction;
         }
 
-        public Task<Transaction> CreateTransaction(CreateTransactionCommand command)
+        public async Task<List<TransactionEntity>> Create(List<TransactionEntity> Transactions)
         {
-            throw new NotImplementedException();
+             _dbContext.Transactions.AddRange(Transactions);
+
+            await _dbContext.SaveChangesAsync();
+
+            return Transactions;
+        }
+
+        public async Task<TransactionEntity> Get(int code)
+        {
+           
+        
+            return await _dbContext.Transactions.FirstOrDefaultAsync(p => p.id == code);
+        
         }
     }
 }

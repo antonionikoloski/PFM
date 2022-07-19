@@ -12,8 +12,8 @@ using pfm.Database.Repositories;
 namespace pfm.Migrations
 {
     [DbContext(typeof(TransactionDbContext))]
-    [Migration("20220719093656_yourMigrationName")]
-    partial class yourMigrationName
+    [Migration("20220719174038_final")]
+    partial class final
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,15 +50,11 @@ namespace pfm.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("direction")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("kind")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("mcc")
+                    b.Property<int?>("mcc")
                         .HasColumnType("integer");
 
                     b.HasKey("id");

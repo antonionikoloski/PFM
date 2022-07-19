@@ -7,7 +7,8 @@ namespace pfm.Services
     {
     
         
-        Task<Transaction> CreateTransaction(CreateTransactionCommand command);
+        Task<List<Transaction>> CreateTransaction(List<CreateTransactionCommand> command);
+       Task<Models.Transaction> Get(int Code);
       
     }
 }

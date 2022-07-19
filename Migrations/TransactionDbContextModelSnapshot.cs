@@ -48,15 +48,11 @@ namespace pfm.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("direction")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("kind")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("mcc")
+                    b.Property<int?>("mcc")
                         .HasColumnType("integer");
 
                     b.HasKey("id");

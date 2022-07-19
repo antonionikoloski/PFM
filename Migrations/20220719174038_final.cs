@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace pfm.Migrations
 {
-    public partial class Initial : Migration
+    public partial class final : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,13 +16,12 @@ namespace pfm.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    direction = table.Column<string>(type: "text", nullable: false),
                     beneficiaryname = table.Column<string>(type: "text", nullable: false),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Direction = table.Column<string>(type: "text", nullable: false),
                     Amount = table.Column<double>(type: "double precision", nullable: false),
                     Currency = table.Column<string>(type: "text", nullable: false),
-                    mcc = table.Column<int>(type: "integer", nullable: false),
+                    mcc = table.Column<int>(type: "integer", nullable: true),
                     kind = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>

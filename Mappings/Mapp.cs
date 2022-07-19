@@ -11,7 +11,10 @@ namespace Product.Mappings
         {
             CreateMap<TransactionEntity, pfm.Models.Transaction>()
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.id));
+                 CreateMap<CreateTransactionCommand, TransactionEntity>()
+                .ForMember(d => d.id, opts => opts.MapFrom(s => s.id));
 
+              
         }
     }
 }
