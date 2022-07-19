@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using pfm.Commands;
 using pfm.Services;
 
 namespace pfm.Controllers;
@@ -17,7 +18,16 @@ public class PfmController : ControllerBase
         _logger = logger;
         _PfmService=pfm;
     }
-     
+      [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody] CreateTransactionCommand command)
+        {
+            var result = await _PfmService.CreateTransaction(command);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            return Ok(result);
+        }
     
  
 }
