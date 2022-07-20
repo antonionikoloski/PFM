@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace pfm.Models
 {
     public  class Transaction 
@@ -6,6 +8,7 @@ namespace pfm.Models
          public DateTime Date { get; set; }
          public string direction { get; set; }
          public string beneficiaryname { get; set; }
+             [JsonPropertyName("Direction")]
          public string Direction { get;set; }
          public double Amount {get; set;}
          public string Currency {get; set;}

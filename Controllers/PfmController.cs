@@ -2,6 +2,7 @@ using System.Globalization;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using pfm.Commands;
+using pfm.Models;
 using pfm.Services;
 
 namespace pfm.Controllers;
@@ -39,10 +40,17 @@ public class PfmController : ControllerBase
            
                  var result=await _PfmService.CreateTransaction(commands);
                     
-                
+                if(result.Count==0)
+                {
+                    return BadRequest("No transactions created");
+                }
+                else
+                {
+                    return Ok(result);
+                }
                
            
-           return Ok();
+           
            
         }
        private List<CreateTransactionCommand> GetCommands(string filename)
@@ -65,6 +73,14 @@ public class PfmController : ControllerBase
               #endregion
            return commands;
        }
-    
+      [HttpGet]
+        public async Task<IActionResult> GetProducts([FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string sortBy, [FromQuery] SortOrder sortOrder )
+        {
+            page = page ?? 1;
+            pageSize = pageSize ?? 10;
+            _logger.LogInformation("Returning {page}. page of products", page);
+            var result = await _PfmService.GetTransactions(page.Value, pageSize.Value, sortBy, sortOrder);
+            return Ok(result);
+        }
  
 }

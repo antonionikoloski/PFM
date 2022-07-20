@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
@@ -24,6 +26,19 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
             {
                 options.UseNpgsql(CreateConnectionString(builder.Configuration));
             });
+               builder.Services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
+            
+
+    builder.Services.AddControllers().AddJsonOptions(options => 
+    {
+        options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+         });
+    
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

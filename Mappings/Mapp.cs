@@ -2,6 +2,7 @@ using AutoMapper;
 using pfm.Commands;
 using pfm.Database.Entities;
 using pfm.Models;
+using Pfm.Models;
 
 namespace Product.Mappings
 {
@@ -13,6 +14,8 @@ namespace Product.Mappings
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.id));
                  CreateMap<CreateTransactionCommand, TransactionEntity>()
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.id));
+
+                 CreateMap<PagedSortedList<TransactionEntity>, PagedSortedList<pfm.Models.Transaction>>();
 
               
         }
