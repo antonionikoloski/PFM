@@ -16,7 +16,13 @@ namespace Product.Mappings
                 .ForMember(d => d.id, opts => opts.MapFrom(s => s.id));
 
                  CreateMap<PagedSortedList<TransactionEntity>, PagedSortedList<pfm.Models.Transaction>>();
-
+                    
+                       CreateMap<CreateCategoryCommand, CategoryEntity>()
+                .ForMember(d => d.code, opts => opts.MapFrom(s => s.code));
+                 CreateMap<CategoryEntity, pfm.Models.Category>();
+                    CreateMap<CreateCategoryCommand, SubCategoryEntity>()
+                    .ForMember(d => d.code, opts => opts.MapFrom(s => s.code));
+                    CreateMap<SubCategoryEntity, pfm.Models.SubCategory>();
               
         }
     }

@@ -20,11 +20,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IPfmService, PfmService>();
  builder.Services.AddScoped<ITransactionRepository,TransactionRepository >();
+ builder.Services.AddScoped<ICategoryRepository,CategoryRepository>();
+ builder.Services.AddScoped<ISubCategoryRepository,SubCategoryRepository>();
+ builder.Services.AddScoped<ICategoryService,CategoryService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
  builder.Services.AddDbContext<TransactionDbContext>(options =>
             {
-                options.UseNpgsql(CreateConnectionString(builder.Configuration));
+            options.UseNpgsql(CreateConnectionString(builder.Configuration));
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
                builder.Services.AddControllers().AddJsonOptions(options =>
             {

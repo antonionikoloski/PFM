@@ -1,3 +1,4 @@
+
 using System.Globalization;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
@@ -5,21 +6,22 @@ using pfm.Commands;
 using pfm.Models;
 using pfm.Services;
 
+
 namespace pfm.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PfmController : ControllerBase
+public class CategoriesController : ControllerBase
 {
   
 
-    private readonly ILogger<PfmController> _logger;
-    private readonly IPfmService _PfmService;
+    private readonly ILogger<CategoriesController> _logger;
+    private readonly ICategoryService _categoryService;
 
-    public PfmController (ILogger<PfmController> logger,IPfmService pfm)
+    public CategoriesController (ILogger<CategoriesController> logger,ICategoryService pfm)
     {
         _logger = logger;
-        _PfmService=pfm;
+        _categoryService=pfm;
     }
     
       [HttpPost]
@@ -35,27 +37,29 @@ public class PfmController : ControllerBase
                }
                var commands=this.GetCommands(filename);
                #endregion
-                  
- 
+          
+                
+  
+
            
-                 var result=await _PfmService.CreateTransaction(commands);
-                    
+                 var result=await _categoryService.Create(commands);
+               
                 if(result.Count==0)
                 {
-                    return BadRequest("No transactions created");
+                    return BadRequest("No categories created");
                 }
                 else
                 {
-                    return Ok(result);
+                    return Ok();
                 }
                
            
            
            
         }
-       private List<CreateTransactionCommand> GetCommands(string filename)
+       private List<CreateCategoryCommand> GetCommands(string filename)
        {
-           var commands = new List<CreateTransactionCommand>();
+           var commands = new List<CreateCategoryCommand>();
            #region  ReadingCsv
            var path =$"{filename}";
            using (var reader =new StreamReader(path))
@@ -66,21 +70,13 @@ public class PfmController : ControllerBase
               csv.ReadHeader();
               while(csv.Read())
               {
-                var com=csv.GetRecord<CreateTransactionCommand>();
+                var com=csv.GetRecord<CreateCategoryCommand>();
                 commands.Add(com);
               }
            }
               #endregion
            return commands;
        }
-      [HttpGet]
-        public async Task<IActionResult> GetProducts([FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string sortBy, [FromQuery] SortOrder sortOrder )
-        {
-            page = page ?? 1;
-            pageSize = pageSize ?? 10;
-            _logger.LogInformation("Returning {page}. page of products", page);
-            var result = await _PfmService.GetTransactions(page.Value, pageSize.Value, sortBy, sortOrder);
-            return Ok(result);
-        }
+
  
 }

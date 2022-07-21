@@ -15,7 +15,7 @@ namespace pfm.Models
          public int? mcc {get;set;}
          public string kind {get;set;}
 
-
+         public ICollection<SubCategory> SubCategories {get; set;}
 
 
     }

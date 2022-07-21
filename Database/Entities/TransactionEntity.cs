@@ -12,6 +12,6 @@ namespace pfm.Database.Entities
         public string Currency { get; set; }
         public int? mcc { get; set; }
         public string kind { get; set; }
-
+        public ICollection<SubCategoryEntity> SubCategories { get; set; }
     }
 }
