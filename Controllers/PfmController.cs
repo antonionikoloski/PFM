@@ -73,6 +73,16 @@ public class PfmController : ControllerBase
               #endregion
            return commands;
        }
+        [HttpPost("transactionid")]
+        public async Task<IActionResult> CategorizeTransaction( [FromQuery] int transactionid, [FromQuery] string namecategory)
+        {
+                var result = await _PfmService.CategorizeTransaction(transactionid,namecategory);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            return Ok(result);
+        }
       [HttpGet]
         public async Task<IActionResult> GetProducts([FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string sortBy, [FromQuery] SortOrder sortOrder )
         {
@@ -82,5 +92,7 @@ public class PfmController : ControllerBase
             var result = await _PfmService.GetTransactions(page.Value, pageSize.Value, sortBy, sortOrder);
             return Ok(result);
         }
- 
+
+
+       
 }

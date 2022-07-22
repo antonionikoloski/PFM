@@ -18,9 +18,13 @@ namespace pfm.Services
             _transactionRepository = transactionRepository;
             _mapper = mapper;
         }
-      
 
-   
+        public async Task<Models.Transaction> CategorizeTransaction(int transactionid, string namecategory)
+        {
+             var result=await _transactionRepository.CategorizeTransaction(transactionid, namecategory);
+                return _mapper.Map<Models.Transaction>(result);
+        }
+
         public async Task<List<Transaction>> CreateTransaction(List<CreateTransactionCommand> command)
         {
                var entity=_mapper.Map<List<TransactionEntity>>(command);

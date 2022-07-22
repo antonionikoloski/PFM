@@ -18,6 +18,20 @@ namespace pfm.Database.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<TransactionEntity> CategorizeTransaction(int transactionid, string namecategory)
+        {
+            var transaction=await _dbContext.Transactions.FirstOrDefaultAsync(p => p.id == transactionid);
+            var subcategory=await _dbContext.SubCategories.FirstOrDefaultAsync(p => p.name == namecategory);
+            if(transaction!=null&&subcategory!=null)
+            {
+                subcategory.TransactionId=transactionid;
+                 _dbContext.Update(subcategory);
+                await _dbContext.SaveChangesAsync();
+
+            }
+            return transaction; 
+        }
+
         public async Task<TransactionEntity> Create(TransactionEntity transaction)
         {
             _dbContext.Transactions.Add(transaction);

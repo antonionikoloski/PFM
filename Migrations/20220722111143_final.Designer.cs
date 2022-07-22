@@ -12,7 +12,7 @@ using pfm.Database.Repositories;
 namespace pfm.Migrations
 {
     [DbContext(typeof(TransactionDbContext))]
-    [Migration("20220721210440_final")]
+    [Migration("20220722111143_final")]
     partial class final
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

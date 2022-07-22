@@ -118,11 +118,11 @@ namespace pfm.Migrations
                         column: x => x.CategoryEntitycode,
                         principalTable: "Categories",
                         principalColumn: "code");
-        
+                  
                     table.ForeignKey(
-                        name: "FK_SubCategories_Transaction_TransactionId",
-                        column: x => x.TransactionId,
-                        principalTable: "Transaction",
+                        name: "FK_SubCategories_Transactions_id",
+                        column: x => x.TransactionEntityid,
+                        principalTable: "Transactions",
                         principalColumn: "id");
                 });
 
