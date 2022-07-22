@@ -42,6 +42,11 @@ namespace pfm.Services
                return _mapper.Map<List<SubCategory>>(result);
         }
 
-      
+        public async Task<Analysis<Analytics>> GetAnalysis(string catcode = null, string sd = null, string ed = null, string direction = null)
+        {
+           var result = await _CategoryRepository.GetAnalysis(catcode, sd, ed, direction);
+
+            return _mapper.Map<Analysis<Models.Analytics>>(result);
+        }
     }
 }

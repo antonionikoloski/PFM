@@ -23,6 +23,7 @@ namespace Product.Mappings
                     CreateMap<CreateCategoryCommand, SubCategoryEntity>()
                     .ForMember(d => d.code, opts => opts.MapFrom(s => s.code));
                     CreateMap<SubCategoryEntity, pfm.Models.SubCategory>();
+                    CreateMap<Analysis<AnalyticsEntity>, Analysis<pfm.Models.Analytics>>();
               
         }
     }

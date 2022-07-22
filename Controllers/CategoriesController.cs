@@ -77,6 +77,14 @@ public class CategoriesController : ControllerBase
               #endregion
            return commands;
        }
+         [HttpGet]
+        public async Task<IActionResult> GetAnalysis( string  catcode,  string sd,  string ed,  string direction )
+        {
+          
+            
+            var result = await _categoryService.GetAnalysis(catcode, sd, ed, direction);
+            return Ok(result);
+        }
 
  
 }
