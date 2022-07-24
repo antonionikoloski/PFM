@@ -100,6 +100,32 @@ namespace pfm.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Splits",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    transactionid = table.Column<int>(type: "integer", nullable: false),
+                    categorycode = table.Column<string>(type: "text", nullable: true),
+                    Amount = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Splits", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Splits_Categories_categorycode",
+                        column: x => x.categorycode,
+                        principalTable: "Categories",
+                        principalColumn: "code");
+                    table.ForeignKey(
+                        name: "FK_Splits_Transactions_transactionid",
+                        column: x => x.transactionid,
+                        principalTable: "Transactions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SubCategories",
                 columns: table => new
                 {
@@ -110,7 +136,7 @@ namespace pfm.Migrations
                     CategoryEntitycode = table.Column<string>(type: "text", nullable: true),
                     TransactionEntityid = table.Column<int>(type: "integer", nullable: true)
                 },
-                constraints: table =>
+                     constraints: table =>
                 {
                     table.PrimaryKey("PK_SubCategories", x => x.code);
                     table.ForeignKey(
@@ -125,6 +151,16 @@ namespace pfm.Migrations
                         principalTable: "Transactions",
                         principalColumn: "id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Splits_categorycode",
+                table: "Splits",
+                column: "categorycode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Splits_transactionid",
+                table: "Splits",
+                column: "transactionid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SubCategories_CategoryEntitycode",
@@ -159,6 +195,9 @@ namespace pfm.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Splits");
+
             migrationBuilder.DropTable(
                 name: "SubCategories");
 

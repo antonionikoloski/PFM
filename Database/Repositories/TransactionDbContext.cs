@@ -11,6 +11,7 @@ namespace pfm.Database.Repositories
           public DbSet<TransactionEntity> Transactions { get; set; }
           public DbSet<CategoryEntity> Categories { get; set; }
           public DbSet<SubCategoryEntity> SubCategories { get; set; }
+          public DbSet<SplitsEntity> Splits { get; set; }
         public TransactionDbContext(DbContextOptions<TransactionDbContext> options) : base(options)
         {
         }

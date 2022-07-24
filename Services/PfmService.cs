@@ -25,12 +25,12 @@ namespace pfm.Services
                 return _mapper.Map<Models.Transaction>(result);
         }
 
-        public async Task<List<Transaction>> CreateTransaction(List<CreateTransactionCommand> command)
+        public async Task<List<Models.Transaction>> CreateTransaction(List<CreateTransactionCommand> command)
         {
                var entity=_mapper.Map<List<TransactionEntity>>(command);
                var result=await _transactionRepository.Create(entity);
 
-               return _mapper.Map<List<Transaction>>(result);
+               return _mapper.Map<List<Models.Transaction>>(result);
         }
 
         public async Task<Models.Transaction> Get(int Code)
@@ -50,6 +50,18 @@ namespace pfm.Services
             var result = await _transactionRepository.List(page, pageSize, sortBy, sortOrder);
 
             return _mapper.Map<PagedSortedList<Models.Transaction>>(result);
+        }
+
+        public async Task<Models.Transaction> SplitTransactions(int transactionid)
+        {
+            var transaction = await _transactionRepository.SplitTransaction(transactionid);
+
+            if (transaction == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<Models.Transaction>(transaction);
         }
     }
 }

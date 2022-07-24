@@ -43,6 +43,15 @@ namespace pfm.Database.Repositories
 
         public async Task<List<TransactionEntity>> Create(List<TransactionEntity> Transactions)
         {
+            foreach(var transaction in Transactions)
+            {
+                var exist_transaction = await _dbContext.Transactions.FirstOrDefaultAsync(p => p.id == transaction.id);
+                if(exist_transaction!=null)
+                {
+                    Transactions.Remove(transaction);
+                }
+
+            }
              _dbContext.Transactions.AddRange(Transactions);
 
             await _dbContext.SaveChangesAsync();
@@ -92,6 +101,60 @@ namespace pfm.Database.Repositories
                 SortOrder = sortOrder
             };
         
+        }
+
+        public async Task<TransactionEntity> SplitTransaction(int transactionid)
+        {
+            int count_amount=0;
+             var subcategories= _dbContext.SubCategories.Where(p => p.TransactionId == transactionid).ToList();
+             var exist_transaction= _dbContext.Splits.Where(p => p.transactionid == transactionid).ToList();
+             var trasaction=_dbContext.Transactions.FirstOrDefault(p => p.id == transactionid);
+             var pom=_dbContext.Splits;
+             var pom_pom=exist_transaction.Count;
+             if(exist_transaction.Count==0)
+             {
+                     var split=new List<SplitsEntity>();
+                     foreach(var subcategory in subcategories)
+                     {
+                        for(int i=0;i<subcategories.Count;i++)
+                        {
+                            if(subcategory.parentcode==subcategories[i].parentcode)
+                            {
+                                  count_amount+=1;
+                            }
+                        }
+                         var toadd=    new SplitsEntity
+                     {
+                          transactionid=transactionid,
+                          Amount=trasaction.Amount*count_amount,
+                          categorycode=subcategory.parentcode,
+                            
+                     };
+                      bool containsItem = split.Any(item => item.categorycode == toadd.categorycode);
+                      if(!containsItem)
+                      {
+                          split.Add(toadd);
+                      }
+                     }
+
+                       _dbContext.Splits.AddRange(split);
+                         await _dbContext.SaveChangesAsync();
+
+             }
+             else
+             {
+                    var splits_exist=_dbContext.Splits.Where(p => p.transactionid == transactionid).ToList();
+                    foreach(var split in splits_exist)
+                    {
+                         var category_exist=_dbContext.Categories.FirstOrDefault(p => p.code == split.categorycode);
+                         if(category_exist==null)
+                         {
+                                _dbContext.Splits.Remove(split);
+                                await _dbContext.SaveChangesAsync();
+                         }
+                    }
+             }
+                return trasaction;
         }
     }
 }

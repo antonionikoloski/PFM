@@ -12,7 +12,7 @@ using pfm.Database.Repositories;
 namespace pfm.Migrations
 {
     [DbContext(typeof(TransactionDbContext))]
-    [Migration("20220722111143_final")]
+    [Migration("20220724140320_final")]
     partial class final
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,32 @@ namespace pfm.Migrations
                     b.HasKey("code");
 
                     b.ToTable("Categories", (string)null);
+                });
+
+            modelBuilder.Entity("pfm.Database.Entities.SplitsEntity", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("id"));
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("categorycode")
+                        .HasColumnType("text");
+
+                    b.Property<int>("transactionid")
+                        .HasColumnType("integer");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("categorycode");
+
+                    b.HasIndex("transactionid");
+
+                    b.ToTable("Splits");
                 });
 
             modelBuilder.Entity("pfm.Database.Entities.SubCategoryEntity", b =>
@@ -187,6 +213,23 @@ namespace pfm.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Transaction");
+                });
+
+            modelBuilder.Entity("pfm.Database.Entities.SplitsEntity", b =>
+                {
+                    b.HasOne("pfm.Database.Entities.CategoryEntity", "CategoryEntity")
+                        .WithMany()
+                        .HasForeignKey("categorycode");
+
+                    b.HasOne("pfm.Database.Entities.TransactionEntity", "TransactionEntity")
+                        .WithMany()
+                        .HasForeignKey("transactionid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryEntity");
+
+                    b.Navigation("TransactionEntity");
                 });
 
             modelBuilder.Entity("pfm.Database.Entities.SubCategoryEntity", b =>

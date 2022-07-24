@@ -42,8 +42,24 @@ namespace pfm.Database.Repositories
 
                var cat=_mapper.Map<List<CategoryEntity>>(categories);
                var subcat=_mapper.Map<List<SubCategoryEntity>>(subcategories);
-               
-             
+                foreach(var category in cat)
+            {
+                var exist_category = await _context.Categories.FirstOrDefaultAsync(p => p.code == category.code);
+                if(exist_category!=null)
+                {
+                    cat.Remove(exist_category);
+                }
+
+            }
+                   foreach(var category in subcat)
+            {
+                var exist_subcategory = await _context.SubCategories.FirstOrDefaultAsync(p => p.code == category.code);
+                if(exist_subcategory!=null)
+                {
+                    subcat.Remove(exist_subcategory);
+                }
+
+            }
 
              _context.Categories.AddRange(cat);
                 

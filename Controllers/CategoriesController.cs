@@ -25,7 +25,7 @@ public class CategoriesController : ControllerBase
     }
     
       [HttpPost]
-        public async Task<IActionResult> CreateTransaction(IFormFile file,[FromServices] IWebHostEnvironment hostingEnvironment)
+        public async Task<IActionResult> CreateCategories(IFormFile file,[FromServices] IWebHostEnvironment hostingEnvironment)
         {
 
                #region UploadCsv
@@ -77,7 +77,7 @@ public class CategoriesController : ControllerBase
               #endregion
            return commands;
        }
-         [HttpGet]
+         [HttpGet("Analytical-View")]
         public async Task<IActionResult> GetAnalysis( string  catcode,  string sd,  string ed,  string direction )
         {
           

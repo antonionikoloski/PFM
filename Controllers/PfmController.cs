@@ -46,7 +46,7 @@ public class PfmController : ControllerBase
                 }
                 else
                 {
-                    return Ok(result);
+                    return Ok();
                 }
                
            
@@ -81,7 +81,7 @@ public class PfmController : ControllerBase
             {
                 return BadRequest();
             }
-            return Ok(result);
+            return Ok();
         }
       [HttpGet]
         public async Task<IActionResult> GetProducts([FromQuery] int? page, [FromQuery] int? pageSize, [FromQuery] string sortBy, [FromQuery] SortOrder sortOrder )
@@ -92,7 +92,19 @@ public class PfmController : ControllerBase
             var result = await _PfmService.GetTransactions(page.Value, pageSize.Value, sortBy, sortOrder);
             return Ok(result);
         }
+      
 
+        [HttpPost("{id}/split")]
+        public async Task<IActionResult> Split([FromRoute] int id)
+        {
+            var result = await _PfmService.SplitTransactions(id);
+            if (result == null)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+    
 
        
 }
