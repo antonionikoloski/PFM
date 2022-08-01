@@ -15,6 +15,7 @@ namespace pfm
     {
          public static void Main(string[] args)
          {
+        var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";    
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,6 +25,15 @@ builder.Services.AddScoped<IPfmService, PfmService>();
  builder.Services.AddScoped<ISubCategoryRepository,SubCategoryRepository>();
  builder.Services.AddScoped<ICategoryService,CategoryService>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy  =>
+                      {
+                          policy.AllowAnyOrigin();
+                          policy.AllowAnyHeader();
+                      });
+});
 
  builder.Services.AddDbContext<TransactionDbContext>(options =>
             {
@@ -63,7 +73,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
-
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
 
 app.MapControllers();

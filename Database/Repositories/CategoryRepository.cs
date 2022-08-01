@@ -101,11 +101,16 @@ namespace pfm.Database.Repositories
                }
                if(!string.IsNullOrEmpty(catcode))
                {
+                  catcode=catcode.ToUpper();
                     categories = _context.Categories.Where(x => x.code == catcode);
                }
 
                 var subcategories=_context.SubCategories.AsQueryable();
-                    
+                 if(!string.IsNullOrEmpty(catcode))
+               {
+                catcode=catcode.ToUpper();
+                    subcategories = _context.SubCategories.Where(x => x.parentcode == catcode);
+               }   
                     
             
             var result =  rangeData.Join(subcategories, x => x.id, y => y.TransactionId, (x, y) => new { x, y }).ToList();

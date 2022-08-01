@@ -27,6 +27,10 @@ public class CategoriesController : ControllerBase
       [HttpPost]
         public async Task<IActionResult> CreateCategories(IFormFile file,[FromServices] IWebHostEnvironment hostingEnvironment)
         {
+            if(file==null)
+            {
+                return BadRequest("No file");
+            }
 
                #region UploadCsv
                string filename= $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";

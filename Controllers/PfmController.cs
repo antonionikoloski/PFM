@@ -1,5 +1,6 @@
 using System.Globalization;
 using CsvHelper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using pfm.Commands;
 using pfm.Models;
@@ -9,6 +10,7 @@ namespace pfm.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors("_myAllowSpecificOrigins")]
 public class PfmController : ControllerBase
 {
   
@@ -25,7 +27,10 @@ public class PfmController : ControllerBase
       [HttpPost]
         public async Task<IActionResult> CreateTransaction(IFormFile file,[FromServices] IWebHostEnvironment hostingEnvironment)
         {
-
+            if(file==null)
+            {
+                return BadRequest("No file");
+            }
                #region UploadCsv
                string filename= $"{hostingEnvironment.WebRootPath}\\files\\{file.FileName}";
                using (FileStream fs = System.IO.File.Create(filename))
@@ -76,6 +81,10 @@ public class PfmController : ControllerBase
         [HttpPost("transactionid")]
         public async Task<IActionResult> CategorizeTransaction( [FromQuery] int transactionid, [FromQuery] string namecategory)
         {
+            if(transactionid==null || namecategory==null)
+            {
+                return BadRequest("No transactionid or namecategory");
+            }
                 var result = await _PfmService.CategorizeTransaction(transactionid,namecategory);
             if (result == null)
             {
